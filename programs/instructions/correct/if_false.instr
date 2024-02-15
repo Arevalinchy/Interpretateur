@@ -1,0 +1,8 @@
+{
+    int x;
+    float y;
+    if false then
+    x := 1;
+    else
+    y := 1.1; 
+ }

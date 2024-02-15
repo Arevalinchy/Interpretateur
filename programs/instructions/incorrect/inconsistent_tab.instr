@@ -1,0 +1,7 @@
+{
+    int tab[10];
+    tab[0] := 1;
+    tab[1] := 2.3;
+    tab[2] := true;
+    tab[3] := tab[0] * 2 + tab.size;
+}

@@ -1,0 +1,11 @@
+{0:top Documentation du compilateur du cours de compilation de la L3, Université de Bordeaux. }
+
+Depuis cette page, vous pouvez aisément accéder à la documentation des modules utiles pour implémenter le compilateur étape par étape.
+
+La bibliothèque {!Course_language} contient la définition du langage défini dans le cours (sous forme d’AST -- dans {!Course_language.Ast}), ainsi que les différents modules qui permettent de les interpréter, les construire depuis un texte, et les analyser. C’est la bibliothèque principale que vous devrez implémenter au cours du semestre.
+
+La bibliothèque {!Util} contient des modules utilitaires communs à plusieurs autres modules, et qui pourraient servir pour compiler d’autres langages.
+
+La bibliothèque {!Abstract_machine} contient la définition des valeurs et des opérations de la machine abstraite dans laquelle interpréter notre langage.
+
+La bibliothèque {!Three_address} contient la définition du code à trois adresses, un interpréteur pour celui-ci, et un traducteur du langage du cours vers ce langage. Elle ne sera incluse dans le projet que lorsqu’on en sera là.

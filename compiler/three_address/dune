@@ -1,0 +1,3 @@
+(library
+ (name three_address)
+ (package compiler))

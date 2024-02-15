@@ -1,0 +1,4 @@
+(library
+ (name abstract_machine)
+ (package compiler)
+ (libraries util))

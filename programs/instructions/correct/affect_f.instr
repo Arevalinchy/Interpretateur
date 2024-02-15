@@ -1,0 +1,4 @@
+{
+    float toto;
+    toto := 1.;
+}

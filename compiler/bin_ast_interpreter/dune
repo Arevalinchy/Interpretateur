@@ -1,0 +1,5 @@
+(executable
+ (public_name ast_interpreter)
+ (name main)
+ (libraries course_language examples)
+ (package compiler))
