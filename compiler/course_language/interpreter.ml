@@ -49,19 +49,25 @@ let operation_of_unop (op : unop) (v : value) =
 let rec interpret_expr (map : value Util.Environment.t)
     (map_function : (Ast.argument list * Ast.instruction) Util.Environment.t)
     (expr : Ast.expr) =
-    (*match expr with
-    |Cst_i _ -> failwith "contante mijo"
-    |Cst_f _ -> failwith "contante mijo"
-    |Cst_b _ -> failwith "contante mijo"
-    |Var _ -> failwith "variable mijo"
-    |Binop _  -> operation_of_binop Binop map map
-    |Unop _ -> operation_of_unop map
+    match expr with
+    |Cst_i (entier, e) -> VInt(entier)
+    |Cst_f (floatant, e)  -> VFloat(floatant)
+    |Cst_b (boolean, e) -> VBool(boolean)
+    |Var (name, e) -> Util.Environment.get map e
+
+(*
+let get_ref (env : 'a t) var = Hashtbl.find_opt env var
+let get (env : 'a t) var = Option.map (fun a -> !a) (get_ref env var)
+*)
+
+
+    |Binop (binop,v1,v2,e)  -> operation_of_binop (binop) (v1) (v2) 
+    |Unop (unop,exp1,e) -> operation_of_unop (unop, exp1)
     |Array_val _ -> failwith "cogno"
     |Size_tab _ -> failwith "cogno"
     |Func _ -> failwith "cogno"
-    | _ -> failwith "Invalid Operation"*)
-  if false then ignore (interpret_expr map map_function expr);
-  VNone
+    | _ -> failwith "Invalid Operation"
+
 (*à remplacer par le code : ce code n’est là que pour que le programme compile sans warning.*)
 
 (* Cette fonction interprète une instruction. Le «and» est là pour qu’elle soit co-récursive avec interpret_expr (à cause des appels de fonctions). Elle ne renvoie rien, mais applique directement des effets de bord sur [map]. Reportez-vous au cours pour la sémantique.*)
