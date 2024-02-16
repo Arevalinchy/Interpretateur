@@ -53,7 +53,7 @@ let rec interpret_expr (map : value Util.Environment.t)
     |Cst_i (entier, e) -> VInt(entier)
     |Cst_f (floatant, e)  -> VFloat(floatant)
     |Cst_b (boolean, e) -> VBool(boolean)
-    |Var (name, e) -> Util.Environment.get map e
+    |Var (name, e) -> Option.get(Util.Environment.get map name)
 
 (*
 let get_ref (env : 'a t) var = Hashtbl.find_opt env var
