@@ -69,8 +69,8 @@ and interpret_instruction (map : value Util.Environment.t)
     (instruction : Ast.instruction) =
     match instruction with 
     | Affect (name, exp1, _) -> Util.Environment.modify map name (interpret_expr map map_function exp1) 
-    | Block  (instList, _) -> List.fold_left map config instList
-    | IfThenElse  _ -> failwith "todo"
+    (*| Block  (instList, _) ->  interpret_instruction map map_function (List.fold_left sem config instList) *)(*rechercer une manier de passer les ellementd du liste*)
+    | IfThenElse (exp1, inst1, inst2, _) -> if (interpret_expr map map_function exp1) = VBool(true) then interpret_instruction map map_function inst1 else interpret_instruction map map_function inst2 (* il doit exister une maniere de lui faire plus mieux / sans if et else*)
     | While  _ -> failwith "todo"
     | Affect_array  _ -> failwith "todo"
     | Array_decl  _ -> failwith "todo"
