@@ -50,22 +50,15 @@ let rec interpret_expr (map : value Util.Environment.t)
     (map_function : (Ast.argument list * Ast.instruction) Util.Environment.t)
     (expr : Ast.expr) =
     match expr with
-    |Cst_i (entier, e) -> VInt(entier)
-    |Cst_f (floatant, e)  -> VFloat(floatant)
-    |Cst_b (boolean, e) -> VBool(boolean)
-    |Var (name, e) -> Option.get(Util.Environment.get map name)
-
-(*
-let get_ref (env : 'a t) var = Hashtbl.find_opt env var
-let get (env : 'a t) var = Option.map (fun a -> !a) (get_ref env var)
-*)
-
-
-    |Binop (binop,v1,v2,e)  -> operation_of_binop (binop) (v1) (v2) 
-    |Unop (unop,exp1,e) -> operation_of_unop (unop, exp1)
-    |Array_val _ -> failwith "cogno"
-    |Size_tab _ -> failwith "cogno"
-    |Func _ -> failwith "cogno"
+    |Cst_i (entier, _) -> VInt(entier)
+    |Cst_f (floatant, _)  -> VFloat(floatant)
+    |Cst_b (boolean, _) -> VBool(boolean)
+    |Var (name, _) -> Option.get(Util.Environment.get map name)
+    |Binop (binop,exp1,exp2,_)  -> operation_of_binop binop (interpret_expr map map_function exp1) (interpret_expr map map_function exp2)
+    |Unop (unop,exp1,_) -> operation_of_unop unop (interpret_expr map map_function exp1)
+    |Array_val _ -> failwith "todo"
+    |Size_tab _ -> failwith "todo"
+    |Func _ -> failwith "todo"
     | _ -> failwith "Invalid Operation"
 
 (*à remplacer par le code : ce code n’est là que pour que le programme compile sans warning.*)
@@ -75,20 +68,18 @@ and interpret_instruction (map : value Util.Environment.t)
     (map_function : (Ast.argument list * Ast.instruction) Util.Environment.t)
     (instruction : Ast.instruction) =
     match instruction with 
-    | Affect  _ -> failwith "cogno"
-    | Block  _ -> failwith "cogno"
-    | IfThenElse  _ -> failwith "cogno"
-    | While  _ -> failwith "cogno"
-    | Affect_array  _ -> failwith "cogno"
-    | Array_decl  _ -> failwith "cogno"
-    | Proc _ -> failwith "cogno"
-    | Return  _ -> failwith "cogno"
-    | Print_str  _ -> failwith "cogno"
-    | Print_expr  _ -> failwith "cogno"
-    | Var_decl  _ -> failwith "cogno"
+    | Affect (name, exp1, _) -> Util.Environment.modify map name (interpret_expr map map_function exp1) 
+    | Block  (instList, _) -> List.fold_left map config instList
+    | IfThenElse  _ -> failwith "todo"
+    | While  _ -> failwith "todo"
+    | Affect_array  _ -> failwith "todo"
+    | Array_decl  _ -> failwith "todo"
+    | Proc _ -> failwith "todo"
+    | Return  _ -> failwith "todo"
+    | Print_str  _ -> failwith "todo"
+    | Print_expr  _ -> failwith "todo"
+    | Var_decl  _ -> failwith "todo"
     | _ -> failwith "Invalid Operation"
-
-  ignore (map, map_function, instruction);
 
 
   (*à compléter*) ()
