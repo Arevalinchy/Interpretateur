@@ -56,8 +56,8 @@ let rec interpret_expr (map : value Util.Environment.t)
     |Var (name, _) -> Option.get(Util.Environment.get map name)
     |Binop (binop,exp1,exp2,_)  -> operation_of_binop binop (interpret_expr map map_function exp1) (interpret_expr map map_function exp2)
     |Unop (unop,exp1,_) -> operation_of_unop unop (interpret_expr map map_function exp1)
-    |Array_val (name, exp1, _) -> if Option.get(Util.Environment.get map name) = VArray(name, _) and exp1 = tao and 1
-    |Size_tab _ -> failwith "todo"
+    |Array_val (name, exp1, p) -> if (Option.get(Util.Environment.get map name) = VArray(name, map) & (interpret_expr map map_function exp1) = int) then Option.get(Util.Environment.get map name^(string_of_int(exp1))) 
+    |Size_tab (name, p)-> if Option.get(Util.Environment.get map name) = VArray(name, p) then Options.get(Util.Environment.get map name )
     |Func _ -> failwith "todo"
     | _ -> failwith "Invalid Operation"
 (*  | VArray of string * value Util.Environment.t*)
@@ -69,11 +69,11 @@ and interpret_instruction (map : value Util.Environment.t)
     (instruction : Ast.instruction) =
     match instruction with 
     | Affect (name, exp1, _) -> Util.Environment.modify map name (interpret_expr map map_function exp1) 
-    (*| Block  (instList, _) ->  interpret_instruction map map_function (List.fold_left sem config instList) *)(*rechercer une manier de passer les ellementd du liste*)
+    (*| Block  (instList, _) ->  interpret_instruction map map_function (List.fold_left sem config instList) *)(*rechercer une manier de passer les elements du liste*)
     | IfThenElse (exp1, inst1, inst2, _) -> if (interpret_expr map map_function exp1) = VBool(true) then interpret_instruction map map_function inst1 else interpret_instruction map map_function inst2 (* il doit exister une maniere de lui faire plus mieux / sans if et else*)
     | While (exp1, inst1, e ) -> if (interpret_expr map map_function exp1) = VBool(true) then interpret_instruction map map_function (While (exp1, inst1, e )) 
-    | Affect_array  _ -> failwith "todo"
-    | Array_decl  _ -> failwith "todo"
+    | Affect_array (name, exp1, exp2, e) -> if (interpret_expr map map_function exp1) = VInt(exp1)  then Util.Environment.modify map name (interpret_expr map map_function exp2) 
+    | Array_decl (basic, name, exp1, e) -> if (interpret_expr map map_function exp1) = VInt(exp1) then Util.Environment.modify map name (interpret_expr map map_function exp1) 
     | Proc _ -> failwith "todo"
     | Return  _ -> failwith "todo"
     | Print_str  _ -> failwith "todo"
